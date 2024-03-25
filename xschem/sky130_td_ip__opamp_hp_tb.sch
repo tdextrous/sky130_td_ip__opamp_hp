@@ -33,9 +33,7 @@ N -200 -20 -200 40 {
 lab=vic}
 N -200 -20 -100 -20 {
 lab=vic}
-N -200 20 -100 20 {
-lab=vic}
-N -200 100 -200 140 {
+N -200 220 -200 260 {
 lab=GND}
 N 120 0 220 0 {
 lab=vout}
@@ -53,6 +51,18 @@ N -600 -80 -600 -40 {
 lab=vout_cm}
 N -600 20 -600 60 {
 lab=GND}
+N -140 20 -100 20 {
+lab=#net1}
+N -140 20 -140 60 {
+lab=#net1}
+N -140 120 -140 140 {
+lab=vic}
+N -200 140 -140 140 {
+lab=vic}
+N -200 140 -200 160 {
+lab=vic}
+N -200 40 -200 140 {
+lab=vic}
 C {sky130_td_ip__opamp_hp.sym} 40 0 0 0 {name=x1}
 C {devices/vsource.sym} -520 -10 0 0 {name=V_AVDD value=3.3 savecurrent=true}
 C {devices/gnd.sym} -520 60 0 0 {name=l1 lab=GND}
@@ -77,8 +87,8 @@ C {devices/gnd.sym} -10 100 0 0 {name=l3 lab=GND}
 C {devices/gnd.sym} 30 100 0 0 {name=l4 lab=GND}
 C {devices/lab_wire.sym} -110 -60 0 0 {name=p8 sig_type=std_logic lab=dvdd
 }
-C {devices/vsource.sym} -200 70 0 0 {name=VCM value=3 savecurrent=false}
-C {devices/gnd.sym} -200 140 0 0 {name=l5 lab=GND}
+C {devices/vsource.sym} -200 190 0 0 {name=VCM value=0.5 savecurrent=false}
+C {devices/gnd.sym} -200 260 0 0 {name=l5 lab=GND}
 C {devices/res.sym} 160 70 0 0 {name=R1
 value=5k
 footprint=1206
@@ -161,3 +171,4 @@ C {devices/lab_wire.sym} -600 -50 3 1 {name=p11 sig_type=std_logic lab=vout_cm
 }
 C {devices/lab_wire.sym} 160 130 1 1 {name=p12 sig_type=std_logic lab=vout_cm
 }
+C {devices/vsource.sym} -140 90 0 0 {name=VDM value=0 savecurrent=false}

@@ -5,6 +5,7 @@ K {}
 V {}
 S {}
 E {}
+T {0V voltage source for current measurement} 30 -250 0 0 0.2 0.2 {}
 N -670 -250 -670 -210 {
 lab=avdd}
 N -670 -150 -670 -110 {

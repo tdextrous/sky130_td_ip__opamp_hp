@@ -117,7 +117,7 @@ C {devices/gnd.sym} -10 100 0 0 {name=l3 lab=GND}
 C {devices/gnd.sym} 30 100 0 0 {name=l4 lab=GND}
 C {devices/lab_wire.sym} -110 -60 0 0 {name=p8 sig_type=std_logic lab=dvdd
 }
-C {devices/vsource.sym} -400 230 0 0 {name=VCM value=1.65 savecurrent=false}
+C {devices/vsource.sym} -400 230 0 0 {name=VCM value=0.5 savecurrent=false}
 C {devices/gnd.sym} -400 300 0 0 {name=l5 lab=GND}
 C {devices/res.sym} 160 70 0 0 {name=R1
 value=5k
@@ -168,7 +168,7 @@ echo - PM: $&pm
 echo ===================================
 
 
-plot db(vout / vid)
+plot av_db ol_phase
 
 .endc
 "
@@ -186,7 +186,7 @@ C {devices/lab_wire.sym} -750 -220 3 1 {name=p11 sig_type=std_logic lab=vout_cm
 C {devices/lab_wire.sym} 160 130 1 1 {name=p12 sig_type=std_logic lab=vout_cm
 }
 C {devices/vcvs.sym} -280 110 0 0 {name=E1 value=-0.5}
-C {devices/vsource.sym} -500 110 0 0 {name=VDM value="ac 1" savecurrent=false}
+C {devices/vsource.sym} -500 110 0 0 {name=VDM value="199.3u ac 1" savecurrent=false}
 C {devices/vcvs.sym} -180 110 0 0 {name=E2 value=0.5}
 C {devices/lab_wire.sym} -140 -20 0 0 {name=p9 sig_type=std_logic lab=vinn
 

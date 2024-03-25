@@ -5,6 +5,7 @@ K {}
 V {}
 S {}
 E {}
+T {0V voltage source for current measurement} 30 -250 0 0 0.2 0.2 {}
 N -670 -250 -670 -210 {
 lab=avdd}
 N -670 -150 -670 -110 {
@@ -13,7 +14,7 @@ N -570 -250 -570 -210 {
 lab=dvdd}
 N -570 -150 -570 -110 {
 lab=GND}
-N -10 -140 -10 -100 {
+N -10 -300 -10 -260 {
 lab=avdd}
 N 30 -140 30 -100 {
 lab=dvdd}
@@ -28,7 +29,7 @@ lab=GND}
 N 30 80 30 100 {
 lab=GND}
 N -140 -60 -100 -60 {
-lab=dvdd}
+lab=GND}
 N 120 0 220 0 {
 lab=vout}
 N 220 0 220 40 {
@@ -59,6 +60,8 @@ N -220 20 -100 20 {
 lab=vin}
 N -220 100 -220 140 {
 lab=GND}
+N -10 -200 -10 -100 {
+lab=#net1}
 C {sky130_td_ip__opamp_hp.sym} 40 0 0 0 {name=x1}
 C {devices/vsource.sym} -670 -180 0 0 {name=V_AVDD value=3.3 savecurrent=true}
 C {devices/gnd.sym} -670 -110 0 0 {name=l1 lab=GND}
@@ -68,7 +71,7 @@ C {devices/vsource.sym} -570 -180 0 0 {name=V_DVDD value=1.8 savecurrent=true}
 C {devices/gnd.sym} -570 -110 0 0 {name=l2 lab=GND}
 C {devices/lab_wire.sym} -570 -220 3 1 {name=p2 sig_type=std_logic lab=dvdd
 }
-C {devices/lab_wire.sym} -10 -110 3 1 {name=p3 sig_type=std_logic lab=avdd
+C {devices/lab_wire.sym} -10 -270 3 1 {name=p3 sig_type=std_logic lab=avdd
 }
 C {devices/lab_wire.sym} 30 -110 3 1 {name=p4 sig_type=std_logic lab=dvdd
 }
@@ -81,7 +84,7 @@ C {devices/lab_wire.sym} -40 -110 3 1 {name=p7 sig_type=std_logic lab=ibias
 }
 C {devices/gnd.sym} -10 100 0 0 {name=l3 lab=GND}
 C {devices/gnd.sym} 30 100 0 0 {name=l4 lab=GND}
-C {devices/lab_wire.sym} -110 -60 0 0 {name=p8 sig_type=std_logic lab=dvdd
+C {devices/lab_wire.sym} -110 -60 0 0 {name=p8 sig_type=std_logic lab=GND
 }
 C {devices/res.sym} 160 70 0 0 {name=R1
 value=5k
@@ -106,7 +109,12 @@ save all
 tran 100n 1m
 run
 
-fourier 10e3 vout
+let i_avdd = i(V1)
+meas tran max_iavdd MAX i_avdd
+
+echo Max current w/ load: $&max_iavdd
+
+plot i_avdd 
 
 .endc
 "
@@ -123,7 +131,8 @@ C {devices/lab_wire.sym} -750 -220 3 1 {name=p11 sig_type=std_logic lab=vout_cm
 }
 C {devices/lab_wire.sym} 160 130 1 1 {name=p12 sig_type=std_logic lab=vout_cm
 }
-C {devices/vsource_arith.sym} -220 70 0 0 {name=E1 VOL=0.3*cos(2*PI*10K*time)+0.5}
+C {devices/vsource_arith.sym} -220 70 0 0 {name=E1 VOL=0*cos(2*PI*10K*time)+1.65}
 C {devices/gnd.sym} -220 140 0 0 {name=l7 lab=GND}
 C {devices/lab_wire.sym} -180 20 0 0 {name=p9 sig_type=std_logic lab=vin
 }
+C {devices/vsource.sym} -10 -230 0 0 {name=V1 value=0 savecurrent=true}

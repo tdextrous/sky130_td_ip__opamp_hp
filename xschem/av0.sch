@@ -117,7 +117,7 @@ C {devices/gnd.sym} -10 100 0 0 {name=l3 lab=GND}
 C {devices/gnd.sym} 30 100 0 0 {name=l4 lab=GND}
 C {devices/lab_wire.sym} -110 -60 0 0 {name=p8 sig_type=std_logic lab=dvdd
 }
-C {devices/vsource.sym} -400 230 0 0 {name=VCM value=0.5 savecurrent=false}
+C {devices/vsource.sym} -400 230 0 0 {name=VCM value=1.65 savecurrent=false}
 C {devices/gnd.sym} -400 300 0 0 {name=l5 lab=GND}
 C {devices/res.sym} 160 70 0 0 {name=R1
 value=5k
@@ -138,6 +138,17 @@ value="
 
 .control
 save all
+
+
+* Calculate input offset voltage
+*dc VDM -100u 100u 5u
+*run
+*let vout = v(vout)
+*meas DC input_offset_voltage WHEN vout=1.65
+*let offset = $&input_offset_voltage
+*alter VDM dc = $&input_offset_voltage
+*alter VDM ac = 1
+*echo offset = $&input_offset_voltage
 
 * Run AC sweep from 1Hz to 1GHz
 AC DEC 100 1 1000000000
@@ -178,6 +189,7 @@ C {devices/code.sym} 300 -130 0 0 {name=TT_MODELS
 only_toplevel=false 
 value="
 .lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+.option TEMP=27
 "}
 C {devices/vsource.sym} -750 -180 0 0 {name=V_VOUTCM value=1.65 savecurrent=true}
 C {devices/gnd.sym} -750 -110 0 0 {name=l6 lab=GND}
@@ -186,7 +198,7 @@ C {devices/lab_wire.sym} -750 -220 3 1 {name=p11 sig_type=std_logic lab=vout_cm
 C {devices/lab_wire.sym} 160 130 1 1 {name=p12 sig_type=std_logic lab=vout_cm
 }
 C {devices/vcvs.sym} -280 110 0 0 {name=E1 value=-0.5}
-C {devices/vsource.sym} -500 110 0 0 {name=VDM value="199.3u ac 1" savecurrent=false}
+C {devices/vsource.sym} -500 110 0 0 {name=VDM value="0 ac 1" savecurrent=false}
 C {devices/vcvs.sym} -180 110 0 0 {name=E2 value=0.5}
 C {devices/lab_wire.sym} -140 -20 0 0 {name=p9 sig_type=std_logic lab=vinn
 

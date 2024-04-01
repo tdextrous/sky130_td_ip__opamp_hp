@@ -86,28 +86,30 @@ lab=vout_cm}
 N -420 120 -360 120 {
 lab=vout_cm}
 N -760 20 -760 80 {
-lab=GND}
-N -760 20 -680 20 {
-lab=GND}
-N -760 -20 -680 -20 {
 lab=#net2}
+N -760 20 -680 20 {
+lab=#net2}
+N -760 -20 -680 -20 {
+lab=#net3}
 N -590 110 -590 120 {
 lab=GND}
 N -590 100 -590 110 {
 lab=GND}
 N -800 -20 -760 -20 {
-lab=#net2}
+lab=#net3}
 N -860 -20 -860 20 {
-lab=#net2}
+lab=#net3}
 N -860 -20 -800 -20 {
-lab=#net2}
+lab=#net3}
 N -860 80 -860 120 {
-lab=GND}
+lab=#net2}
 N -860 120 -760 120 {
-lab=GND}
+lab=#net2}
 N -760 80 -760 120 {
-lab=GND}
+lab=#net2}
 N -760 120 -760 140 {
+lab=#net2}
+N -760 200 -760 240 {
 lab=GND}
 C {sky130_td_ip__opamp_hp.sym} 40 0 0 0 {name=x1}
 C {devices/vsource.sym} -680 -340 0 0 {name=V_AVDD value=3.3 savecurrent=true}
@@ -217,5 +219,6 @@ C {devices/lab_wire.sym} -370 0 0 0 {name=p16 sig_type=std_logic lab=vout_av
 }
 C {devices/lab_wire.sym} -420 130 1 1 {name=p17 sig_type=std_logic lab=vout_cm
 }
-C {devices/gnd.sym} -760 140 0 0 {name=l9 lab=GND}
-C {devices/vsource.sym} -860 50 0 0 {name=V3 value="ac 1" savecurrent=false}
+C {devices/vsource.sym} -860 50 0 0 {name=V3 value="19u ac 1" savecurrent=false}
+C {devices/vsource.sym} -760 170 0 0 {name=VCM value=1.65 savecurrent=true}
+C {devices/gnd.sym} -760 240 0 0 {name=l9 lab=GND}

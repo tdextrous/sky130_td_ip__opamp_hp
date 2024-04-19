@@ -86,39 +86,39 @@ lab=vout_cm}
 N -420 120 -360 120 {
 lab=vout_cm}
 N -760 20 -760 80 {
-lab=#net1}
+lab=vout_av}
 N -760 20 -680 20 {
-lab=#net1}
+lab=vout_av}
 N -760 -20 -680 -20 {
-lab=#net2}
+lab=vinn_dm}
 N -590 110 -590 120 {
 lab=GND}
 N -590 100 -590 110 {
 lab=GND}
 N -800 -20 -760 -20 {
-lab=#net2}
+lab=vinn_dm}
 N -860 -20 -860 20 {
-lab=#net2}
+lab=vinn_dm}
 N -860 -20 -800 -20 {
-lab=#net2}
+lab=vinn_dm}
 N -860 80 -860 120 {
-lab=#net1}
+lab=vout_av}
 N -860 120 -760 120 {
-lab=#net1}
+lab=vout_av}
 N -760 80 -760 120 {
-lab=#net1}
+lab=vout_av}
 N -760 120 -760 140 {
-lab=#net1}
+lab=vout_av}
 N -10 100 -10 160 {
 lab=GND}
 N -10 -240 -10 -220 {
 lab=avdd}
 N -10 -160 -10 -100 {
-lab=#net3}
+lab=#net1}
 N -760 220 -760 260 {
 lab=GND}
 N -760 140 -760 160 {
-lab=#net1}
+lab=vout_av}
 C {sky130_td_ip__opamp_hp.sym} 40 0 0 0 {name=x1}
 C {devices/vsource.sym} -680 -340 0 0 {name=V_AVDD value=\{Vvdd\} savecurrent=true}
 C {devices/gnd.sym} -10 180 0 0 {name=l1 lab=GND}
@@ -162,11 +162,14 @@ value="
 save all
 
 * Calculate input offset voltage
-dc VDM -1m 1m 100u
+alter VDM pwl = [ 0 -10m 10 10m ]
+tran 10m 10 
 run
-let vout = v(vout)
-meas DC input_offset_voltage WHEN vout=1.65
-let offset = $&input_offset_voltage
+let vid = v(vinn_dm) - v(vinp_dm)
+let vout = v(vout_av)
+meas tran input_offset_voltage FIND vid WHEN vout=1.65
+
+alter @VDM[pwl] = [ 0 0 ]
 alter VDM dc = $&input_offset_voltage
 alter VDM ac = 1
 
@@ -247,3 +250,7 @@ C {devices/lab_wire.sym} -420 130 1 1 {name=p17 sig_type=std_logic lab=vout_cm
 C {devices/vsource.sym} -860 50 0 0 {name=VDM value="19u ac 1" savecurrent=false}
 C {devices/vsource.sym} -760 190 0 0 {name=VCM value=\{Vcm\} savecurrent=true}
 C {devices/gnd.sym} -760 260 0 0 {name=l9 lab=GND}
+C {devices/lab_wire.sym} -740 -20 0 0 {name=p18 sig_type=std_logic lab=vinn_dm
+}
+C {devices/lab_wire.sym} -740 20 0 0 {name=p19 sig_type=std_logic lab=vinp_dm
+}

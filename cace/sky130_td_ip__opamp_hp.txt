@@ -440,6 +440,7 @@ electrical_parameters {
 	display:	Open-loop Voltage Gain
 	unit:		dB
 	spec {
+    minimum: 70
 		typical:	100
 	}
 	simulate {
@@ -475,6 +476,7 @@ electrical_parameters {
 	display:	Gain-Bandwidth 
 	unit:		MHz
 	spec {
+    minimum: 10
 		typical: 12	
 		maximum: 15	fail 	maximum-above
 	}
@@ -875,6 +877,7 @@ electrical_parameters {
 	display:	[Mismatch] Open-loop Voltage Gain
 	unit:		dB
 	spec {
+    minimum: 70
 		typical:	100
 	}
 	simulate {
@@ -908,6 +911,7 @@ electrical_parameters {
 	display:	[Mismatch] Gain-Bandwidth 
 	unit:		MHz
 	spec {
+    minimum: 10
 		typical: 12	
 		maximum: 15	fail 	maximum-above
 	}
@@ -1208,6 +1212,7 @@ electrical_parameters {
 	display:	[Monte-Carlo] Open-loop Voltage Gain
 	unit:		dB
 	spec {
+    minimum: 70
 		typical:	100
 	}
 	simulate {
@@ -1249,6 +1254,7 @@ electrical_parameters {
 	display:	[Monte-Carlo] Gain-Bandwidth 
 	unit:		MHz
 	spec {
+    minimum: 10
 		typical: 12	
 		maximum: 15	fail 	maximum-above
 	}

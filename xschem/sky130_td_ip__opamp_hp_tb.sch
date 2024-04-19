@@ -87,7 +87,7 @@ C {devices/gnd.sym} -10 100 0 0 {name=l3 lab=GND}
 C {devices/gnd.sym} 30 100 0 0 {name=l4 lab=GND}
 C {devices/lab_wire.sym} -110 -60 0 0 {name=p8 sig_type=std_logic lab=dvdd
 }
-C {devices/vsource.sym} -200 190 0 0 {name=VCM value=0.5 savecurrent=false}
+C {devices/vsource.sym} -200 190 0 0 {name=VCM value=3 savecurrent=false}
 C {devices/gnd.sym} -200 260 0 0 {name=l5 lab=GND}
 C {devices/res.sym} 160 70 0 0 {name=R1
 value=5k
@@ -154,7 +154,7 @@ let vdsat25 = @m.x1.xm25.msky130_fd_pr__pfet_g5v0d10v5[vdsat]
 let vth25 = @m.x1.xm25.msky130_fd_pr__pfet_g5v0d10v5[vth]
 let vgs25 = avdd - x1.net7
 
-plot (vgs25 - vth25) (vgs26 - vth26)
+*plot (vgs25 - vth25) (vgs26 - vth26)
 
 .endc
 "

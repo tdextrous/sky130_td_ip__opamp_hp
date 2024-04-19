@@ -138,15 +138,12 @@ value="
 
 .control
 save all
-
-dc VDM -5m 5m 100u
-
+alter @VDM[pwl] = [ 0 -10m 10 10m ]
+tran 1m 10 
 run
-
+let vid = v(vid)
 let vout = v(vout)
-
-meas DC input_offset_voltage WHEN vout=1.65
-
+meas tran input_offset_voltage FIND vid WHEN vout=1.65 RISE=LAST
 
 echo 
 echo ===================================

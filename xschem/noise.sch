@@ -46,28 +46,30 @@ lab=vout_cm}
 N -420 120 -360 120 {
 lab=vout_cm}
 N -760 20 -760 80 {
-lab=GND}
-N -760 20 -680 20 {
-lab=GND}
-N -760 -20 -680 -20 {
 lab=#net1}
+N -760 20 -680 20 {
+lab=#net1}
+N -760 -20 -680 -20 {
+lab=#net2}
 N -590 110 -590 120 {
 lab=GND}
 N -590 100 -590 110 {
 lab=GND}
 N -800 -20 -760 -20 {
-lab=#net1}
+lab=#net2}
 N -860 -20 -860 20 {
-lab=#net1}
+lab=#net2}
 N -860 -20 -800 -20 {
-lab=#net1}
+lab=#net2}
 N -860 80 -860 120 {
-lab=GND}
+lab=#net1}
 N -860 120 -760 120 {
-lab=GND}
+lab=#net1}
 N -760 80 -760 120 {
-lab=GND}
+lab=#net1}
 N -760 120 -760 140 {
+lab=#net1}
+N -760 200 -760 240 {
 lab=GND}
 C {devices/vsource.sym} -680 -340 0 0 {name=V_AVDD value=3.3 savecurrent=true}
 C {devices/lab_wire.sym} -680 -380 3 1 {name=p1 sig_type=std_logic lab=avdd
@@ -88,16 +90,17 @@ value="
 .save all
 
 
-.noise v(vout) V3 dec 100 100 90MEG
+* .noise v(vout) V3 dec 100 100 90MEG
 
 .control
 save all
-
-tran 1e-6 1e-3 
+set sqrnoise
 noise V(vout) V3 dec 100 100 1e6
 print inoise_total onoise_total
 
 setplot noise1
+let vn = sqrt(onoise_spectrum[0])
+echo vn = $&vn
 plot inoise_spectrum
 
 .endc
@@ -138,5 +141,6 @@ C {devices/lab_wire.sym} -370 0 0 0 {name=p16 sig_type=std_logic lab=vout
 }
 C {devices/lab_wire.sym} -420 130 1 1 {name=p17 sig_type=std_logic lab=vout_cm
 }
-C {devices/gnd.sym} -760 140 0 0 {name=l9 lab=GND}
+C {devices/gnd.sym} -760 240 0 0 {name=l9 lab=GND}
 C {devices/vsource.sym} -860 50 0 0 {name=V3 value="1.65 ac 1" savecurrent=false}
+C {devices/vsource.sym} -760 170 0 0 {name=V1 value="1.65" savecurrent=false}

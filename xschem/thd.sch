@@ -53,9 +53,9 @@ N -180 -180 -180 -20 {
 lab=vout}
 N -180 -20 -100 -20 {
 lab=vout}
-N -220 20 -220 40 {
-lab=vin}
 N -220 20 -100 20 {
+lab=vin}
+N -220 20 -220 40 {
 lab=vin}
 N -220 100 -220 140 {
 lab=GND}
@@ -84,7 +84,7 @@ C {devices/gnd.sym} 30 100 0 0 {name=l4 lab=GND}
 C {devices/lab_wire.sym} -110 -60 0 0 {name=p8 sig_type=std_logic lab=dvdd
 }
 C {devices/res.sym} 160 70 0 0 {name=R1
-value=5k
+value=500
 footprint=1206
 device=resistor
 m=1}
@@ -106,7 +106,10 @@ save all
 tran 100n 1m
 run
 
-fourier 10e3 vout
+fourier 10e3 vout 
+
+* Try this:
+* fourier 10e3 vout > somefile.dat
 
 .endc
 "
@@ -123,7 +126,7 @@ C {devices/lab_wire.sym} -750 -220 3 1 {name=p11 sig_type=std_logic lab=vout_cm
 }
 C {devices/lab_wire.sym} 160 130 1 1 {name=p12 sig_type=std_logic lab=vout_cm
 }
-C {devices/vsource_arith.sym} -220 70 0 0 {name=E1 VOL=0.3*cos(2*PI*10K*time)+0.5}
+C {devices/vsource_arith.sym} -220 70 0 0 {name=E1 VOL=1.6*cos(2*PI*10K*time)+1.65}
 C {devices/gnd.sym} -220 140 0 0 {name=l7 lab=GND}
 C {devices/lab_wire.sym} -180 20 0 0 {name=p9 sig_type=std_logic lab=vin
 }

@@ -106,7 +106,7 @@ value="
 .control
 save all
 
-tran 100n 1m
+tran 100n 10u
 run
 
 let i_avdd = i(V1)
@@ -123,7 +123,8 @@ plot i_avdd
 C {devices/code.sym} 300 -130 0 0 {name=TT_MODELS 
 only_toplevel=false 
 value="
-.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+.option TEMP=85
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice ff
 "}
 C {devices/vsource.sym} -750 -180 0 0 {name=V_VOUTCM value=1.65 savecurrent=true}
 C {devices/gnd.sym} -750 -110 0 0 {name=l6 lab=GND}

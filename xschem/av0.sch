@@ -141,16 +141,19 @@ save all
 
 
 * Calculate input offset voltage
-*dc VDM -100u 100u 5u
-*run
-*let vout = v(vout)
-*meas DC input_offset_voltage WHEN vout=1.65
-*let offset = $&input_offset_voltage
-*alter VDM dc = $&input_offset_voltage
-*alter VDM ac = 1
-*echo offset = $&input_offset_voltage
+alter @VDM[pwl] = [ 0 -10m 10 10m ]
+tran 5m 10 
+run
+let vid = v(vid)
+let vout = v(vout)
+meas tran input_offset_voltage FIND vid WHEN vout=1.65
+
+
 
 * Run AC sweep from 1Hz to 1GHz
+alter VDM pwl = [ 0 0 ]
+alter VDM dc = $&input_offset_voltage
+
 AC DEC 100 1 1000000000
 run
 

@@ -104,7 +104,7 @@ value="
 .control
 save all
 
-tran 100n 1m
+tran 100n 100u
 run
 
 let i_avdd = i(V1)

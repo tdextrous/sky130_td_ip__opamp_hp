@@ -63,7 +63,7 @@ lab=GND}
 N -10 -200 -10 -100 {
 lab=#net1}
 C {sky130_td_ip__opamp_hp.sym} 40 0 0 0 {name=x1}
-C {devices/vsource.sym} -670 -180 0 0 {name=V_AVDD value=3.3 savecurrent=true}
+C {devices/vsource.sym} -670 -180 0 0 {name=V_AVDD value=3 savecurrent=true}
 C {devices/gnd.sym} -670 -110 0 0 {name=l1 lab=GND}
 C {devices/lab_wire.sym} -670 -220 3 1 {name=p1 sig_type=std_logic lab=avdd
 }
@@ -123,15 +123,16 @@ plot i_avdd
 C {devices/code.sym} 300 -130 0 0 {name=TT_MODELS 
 only_toplevel=false 
 value="
-.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+.option TEMP=85
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice ff
 "}
-C {devices/vsource.sym} -750 -180 0 0 {name=V_VOUTCM value=1.65 savecurrent=true}
+C {devices/vsource.sym} -750 -180 0 0 {name=V_VOUTCM value=3.3 savecurrent=true}
 C {devices/gnd.sym} -750 -110 0 0 {name=l6 lab=GND}
 C {devices/lab_wire.sym} -750 -220 3 1 {name=p11 sig_type=std_logic lab=vout_cm
 }
 C {devices/lab_wire.sym} 160 130 1 1 {name=p12 sig_type=std_logic lab=vout_cm
 }
-C {devices/vsource_arith.sym} -220 70 0 0 {name=E1 VOL=1.6*cos(2*PI*10K*time)+1.65}
+C {devices/vsource_arith.sym} -220 70 0 0 {name=E1 VOL=1.65*cos(2*PI*10K*time)+3.3}
 C {devices/gnd.sym} -220 140 0 0 {name=l7 lab=GND}
 C {devices/lab_wire.sym} -180 20 0 0 {name=p9 sig_type=std_logic lab=vin
 }

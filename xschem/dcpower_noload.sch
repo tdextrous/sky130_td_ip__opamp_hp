@@ -80,16 +80,14 @@ C {devices/lab_wire.sym} 210 0 0 0 {name=p10 sig_type=std_logic lab=vout
 C {devices/code.sym} 310 60 0 0 {name=SIM 
 only_toplevel=false 
 value="
-.save all
-
 .control
 save all
-
-dc VCM 0 3.3 0.1
+alter VCM pwl = [ 0 0 10 3.3 ]
+alter VCM dc = 0
+tran 10m 10 
 run
-
 let i_avdd = -1 * i(V1)
-meas DC max_iavdd MAX i_avdd
+meas tran max_iavdd MAX i_avdd
 
 echo Max current from AVDD (no load): $&max_iavdd
 
@@ -112,4 +110,4 @@ C {devices/gnd.sym} -220 140 0 0 {name=l7 lab=GND}
 C {devices/lab_wire.sym} -180 20 0 0 {name=p9 sig_type=std_logic lab=vin
 }
 C {devices/vsource.sym} -10 -230 2 0 {name=V1 value=0 savecurrent=false}
-C {devices/vsource.sym} -220 70 0 0 {name=VCM value=1.65 savecurrent=true}
+C {devices/vsource.sym} -220 70 0 0 {name=VCM value=0.3 savecurrent=true}

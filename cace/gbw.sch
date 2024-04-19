@@ -138,11 +138,15 @@ value="
 save all
 
 * Calculate input offset voltage
-dc VDM -1m 1m 50u
+alter @VDM[pwl] = [ 0 -10m 10 10m ]
+tran 1m 10 
 run
+let vid = v(vid)
 let vout = v(vout)
-meas DC input_offset_voltage WHEN vout=1.65
-let offset = $&input_offset_voltage
+meas tran input_offset_voltage FIND vid WHEN vout=1.65 RISE=LAST
+
+
+alter @VDM[pwl] = [ 0 0 ]
 alter VDM dc = $&input_offset_voltage
 alter VDM ac = 1
 

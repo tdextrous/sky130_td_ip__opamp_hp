@@ -82,12 +82,12 @@ only_toplevel=false
 value="
 .control
 save all
-
-dc VCM 0 3.3 0.1
+alter VCM pwl = [ 0 0 10 3.3 ]
+alter VCM dc = 0
+tran 10m 10 
 run
-
 let i_avdd = -1 * i(V1)
-meas DC max_iavdd MAX i_avdd
+meas tran max_iavdd MAX i_avdd
 
 echo Max current from AVDD (no load): $&max_iavdd
 

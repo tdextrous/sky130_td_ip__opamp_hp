@@ -139,14 +139,13 @@ value="
 .control
 save all
 
-dc VDM -65u -55u 0.1u
-
+alter @VDM[pwl] = [ 0 -10m 10 10m ]
+tran 5m 10 
 run
 
+let vid = v(vid)
 let vout = v(vout)
-
-meas DC input_offset_voltage WHEN vout=1.65
-
+meas tran input_offset_voltage FIND vid WHEN vout=1.65 RISE=LAST
 
 echo 
 echo ===================================
@@ -154,8 +153,18 @@ echo Differential-mode DC sweep results
 echo - Input Offset voltage: $&input_offset_voltage
 echo ===================================
 
-
 plot vout
+*plot vid
+
+alter @VDM[pwl] = [ 0 0 ]
+alter @VDM[dc] = $&input_offset_voltage
+
+ac DEC 10 1 1G 
+run
+
+let gain_db = db(vout / vid)
+plot gain_db
+
 
 .endc
 "
@@ -164,6 +173,7 @@ plot vout
 C {devices/code.sym} 300 -130 0 0 {name=TT_MODELS 
 only_toplevel=false 
 value="
+.option TEMP=-40
 .lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
 "}
 C {devices/vsource.sym} -750 -180 0 0 {name=V_VOUTCM value=1.65 savecurrent=true}
@@ -173,7 +183,7 @@ C {devices/lab_wire.sym} -750 -220 3 1 {name=p11 sig_type=std_logic lab=vout_cm
 C {devices/lab_wire.sym} 160 130 1 1 {name=p12 sig_type=std_logic lab=vout_cm
 }
 C {devices/vcvs.sym} -280 110 0 0 {name=E1 value=-0.5}
-C {devices/vsource.sym} -500 110 0 0 {name=VDM value="0 ac 1" savecurrent=false}
+C {devices/vsource.sym} -500 110 0 0 {name=VDM value="PWL 0 0 ac 1" savecurrent=false}
 C {devices/vcvs.sym} -180 110 0 0 {name=E2 value=0.5}
 C {devices/lab_wire.sym} -140 -20 0 0 {name=p9 sig_type=std_logic lab=vinn
 

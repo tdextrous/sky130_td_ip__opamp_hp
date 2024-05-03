@@ -1,0 +1,50 @@
+magic
+tech sky130A
+timestamp 1714591961
+<< pwell >>
+rect -92 -92 92 92
+<< psubdiff >>
+rect -74 57 -26 74
+rect 26 57 74 74
+rect -74 26 -57 57
+rect 57 26 74 57
+rect -74 -57 -57 -26
+rect 57 -57 74 -26
+rect -74 -74 -26 -57
+rect 26 -74 74 -57
+<< psubdiffcont >>
+rect -26 57 26 74
+rect -74 -26 -57 26
+rect 57 -26 74 26
+rect -26 -74 26 -57
+<< ndiode >>
+rect -23 17 23 23
+rect -23 -17 -17 17
+rect 17 -17 23 17
+rect -23 -23 23 -17
+<< ndiodec >>
+rect -17 -17 17 17
+<< locali >>
+rect -74 57 -26 74
+rect 26 57 74 74
+rect -74 26 -57 57
+rect 57 26 74 57
+rect -25 -17 -17 17
+rect 17 -17 25 17
+rect -74 -57 -57 -26
+rect 57 -57 74 -26
+rect -74 -74 -26 -57
+rect 26 -74 74 -57
+<< viali >>
+rect -17 -17 17 17
+<< metal1 >>
+rect -23 17 23 20
+rect -23 -17 -17 17
+rect 17 -17 23 17
+rect -23 -20 23 -17
+<< properties >>
+string FIXED_BBOX -65 -65 65 65
+string gencell sky130_fd_pr__diode_pw2nd_05v5
+string library sky130
+string parameters w 0.46 l 0.46 area 211.6m peri 1.84 nx 1 ny 1 dummy 0 lmin 0.45 wmin 0.45 elc 1 erc 1 etc 1 ebc 1 doverlap 0 compatible {sky130_fd_pr__diode_pw2nd_05v5 sky130_fd_pr__diode_pw2nd_05v5_lvt  sky130_fd_pr__diode_pw2nd_05v5_nvt sky130_fd_pr__diode_pw2nd_11v0} full_metal 1 vias 1 viagb 0 viagt 0 viagl 0 viagr 0
+<< end >>

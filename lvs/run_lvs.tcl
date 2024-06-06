@@ -16,4 +16,3 @@ readnet spice ../netlist/schematic/sky130_td_ip__opamp_hp.spice $circuit2
 
 lvs "$circuit1 sky130_td_ip__opamp_hp" "$circuit2 sky130_td_ip__opamp_hp" \
         $setupfile sky130_td_ip__opamp_hp_comp.out
-~                                                    

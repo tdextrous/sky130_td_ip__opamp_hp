@@ -5395,7 +5395,7 @@ C {devices/lab_wire.sym} 3720 1050 2 1 {name=p256 sig_type=std_logic lab=vtailp}
 C {devices/lab_wire.sym} 3680 940 0 1 {name=p259 sig_type=std_logic lab=avdd}
 C {sky130_fd_pr/diode.sym} -3170 1430 0 0 {name=D1
 model=diode_pw2nd_05v5
-area=211.6e11
+area=211.6e9
 perim=1.84e6
 spiceprefix=X
 }

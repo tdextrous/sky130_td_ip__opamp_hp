@@ -1,0 +1,1381 @@
+#--------------------------------------------------------------
+# CACE circuit characterization file
+#--------------------------------------------------------------
+
+name: sky130_td_ip__opamp_hp
+description: Rail-to-rail driver operational amplifier.
+PDK: sky130A
+cace_format: 5.2
+authorship:
+  designer: Thomas Dexter
+  institution: Texas A&M University
+  creation_date: March 11, 2024
+  license: Apache 2.0
+paths:
+  root: ..
+  documentation: docs
+  schematic: xschem
+  magic: mag
+  layout: gds
+  netlist: netlist
+  
+pins:
+  ena:
+    description: Enable input (active low)
+    type: digital
+    direction: input
+    Vmin: "vss- 0.3"
+    Vmax: "vdd+0.3"
+    note: May be 1.8V or 3.3V signal
+  vinn:
+    description: amplifier voltage negative input
+    type: signal
+    direction: output
+    Vmin: vss
+    Vmax: vdd
+  vinp:
+    description: amplifier voltage positive input
+    type: signal
+    direction: output
+    Vmin: vss
+    Vmax: vdd
+  vout:
+    description: amplifier voltage output
+    type: signal
+    direction: output
+    Vmin: vss
+    Vmax: vdd
+  avdd:
+    description: Analog power supply
+    type: power
+    direction: inout
+    Vmin: 3
+    Vmax: 5.5
+  dvdd:
+    description: Digital power supply
+    type: power
+    direction: inout
+    Vmin: 1.62
+    Vmax: 1.98
+  avss:
+    description: Analog ground
+    type: ground
+    direction: inout
+    Vmin: -0.3
+    Vmax: 0.3
+  dvss:
+    description: Digital ground
+    type: ground
+    direction: inout
+    Vmin: -0.3
+    Vmax: 0.3
+  ibias:
+    description: bandgap-controlled current bias
+    type: power
+    direction: inout
+    Imin: 100n
+    Imax: 100n
+default_conditions:
+  Vvdd:
+    description: Analog power supply voltage
+    display: vdd
+    unit: V
+    typical: 3.3
+  Vvss:
+    description: Analog ground
+    display: vss
+    unit: V
+    typical: 0
+  Vdvdd:
+    description: Digital power supply voltage
+    display: dvdd
+    unit: V
+    typical: 1.8
+    note: Reference voltage for the enable input
+  Rout:
+    description: Output load resistance
+    display: RLoad
+    unit: KΩ
+    typical: 500
+  Cout:
+    description: Output load capacitance
+    display: CLoad
+    unit: pF
+    maximum: 30
+  ena:
+    description: Amplifier enable
+    display: ena
+    typical: 1.8
+  Vcm:
+    description: Common-mode input voltage
+    display: Vcm
+    typical: 1.65
+  Vdiff:
+    description: Differential input voltage
+    display: Vdiff
+    typical: 0
+  temperature:
+    description: Ambient temperature
+    display: Temp
+    unit: °C
+    minimum: -40
+    typical: 25
+    maximum: 85
+  corner:
+    description: Process corner
+    display: Corner
+    minimum: ss
+    typical: tt
+    maximum: ff
+  iterations:
+    description: Iterations to run
+    display: Iterations
+    minimum: 1
+    maximum: 1
+    step: linear
+    stepsize: 1
+parameters:
+  Idd_enabled:
+    description: Current draw through analog supply, amplifier enabled
+    status: skip
+    display: Idd (enabled)
+    unit: µA
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: 700
+      maximum:
+        value: 1800
+        fail: true
+    conditions:
+      Vvdd:
+        minimum: 3.0
+        typical: 3.3
+        maximum: 5.5
+      Vcm:
+        maximum: 3.3
+        typical: 1.65
+        minimum: 0
+      temperature:
+        minimum: -40
+        typical: 27
+        maximum: 85
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: ivdd_enabled.sch
+        format: ascii
+        suffix: .data
+        variables: [result]
+    name: Idd_enabled
+  Idd_quiescent:
+    description: Current draw through analog supply, amplifier enabled, no load
+    status: skip
+    display: Idd - Quiescent (No Load)
+    unit: µA
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: '400'
+      maximum:
+        value: '1000'
+        fail: true
+    conditions:
+      Vvdd:
+        maximum: '5.5'
+        typical: '3.3'
+        minimum: '3.0'
+      Vcm:
+        maximum: '2.8'
+        typical: '1.65'
+        minimum: '0.5'
+      temperature:
+        minimum: '-40'
+        typical: '27'
+        maximum: '85'
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: ivdd_quiescent.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Idd_quiescent
+  Idd_disabled:
+    description: Current draw through analog supply, amplifier disabled
+    display: Idd (Disabled)
+    unit: nA
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: '1'
+      maximum:
+        value: '10'
+        fail: true
+    conditions:
+      Vvdd:
+        minimum: '3.0'
+        typical: '3.3'
+        maximum: '5.5'
+      Vcm:
+        maximum: '3.3'
+        typical: '1.65'
+        minimum: '0.0'
+      ena:
+        typical: '0'
+      temperature:
+        minimum: '-40'
+        typical: '27'
+        maximum: '85'
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: ivdd_disabled.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Idd_disabled
+  Vol:
+    status: skip
+    description: Output voltage low
+    display: Output voltage low (Vol)
+    unit: V
+    spec:
+      typical:
+        value: any
+      maximum:
+        value: '0.1'
+        fail: true
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      Vdiff:
+        typical: '-1'
+      temperature:
+        maximum: '110'
+        typical: '27'
+        minimum: '-40'
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: voltage_out.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Vol
+  Voh:
+    status: skip
+    description: Output voltage high
+    display: Output voltage high (Voh)
+    unit: V
+    spec:
+      minimum:
+        value: '2.4'
+        fail: true
+      typical:
+        value: any
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      Vdiff:
+        typical: '1'
+      temperature:
+        maximum: '110'
+        typical: '27'
+        minimum: '-40'
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: voltage_out.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Voh
+  input_offset_voltage:
+    description: Input offset voltage
+    display: Input Offset Voltage
+    unit: mV
+    spec:
+      minimum:
+        value: '-10'
+        fail: true
+      typical:
+        value: '0'
+      maximum:
+        value: '10'
+        fail: true
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        maximum: '85'
+        typical: '27'
+        minimum: '-40'
+      Vcm:
+        typical: '1.65'
+        note: offset measured at 10% and 90% values
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: input_offset.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: input_offset_voltage
+  avo:
+    description: open loop voltage gain
+    display: Open-loop Voltage Gain
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+      typical:
+        value: '100'
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        minimum: '-40'
+        typical: '27'
+        maximum: '85'
+      Vcm:
+        typical: '1.65'
+        note: AC analysis not dependent on Vcm
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: gbw.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+        - 'null'
+        - 'null'
+    name: avo
+  gain_bandwidth:
+    description: Gain Bandwidth Product
+    display: Gain-Bandwidth
+    unit: MHz
+    spec:
+      minimum:
+        value: '10'
+      typical:
+        value: '12'
+      maximum:
+        value: '15'
+        fail: true
+        calculation: maximum
+        limit: above
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        maximum: '85'
+        typical: '27'
+        minimum: '-40'
+      Vcm:
+        typical: '1.65'
+        note: AC analysis not dependent on Vcm
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: gbw.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+        - 'null'
+    name: gain_bandwidth
+  phase_margin:
+    description: Phase margin
+    display: Phase Margin
+    unit: °
+    spec:
+      minimum:
+        value: '45'
+        fail: true
+      typical:
+        value: '70'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        maximum: '85'
+        typical: '27'
+        minimum: '-40'
+      Vcm:
+        typical: '1.65'
+        note: AC analysis not dependent on Vcm
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '1'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: gbw.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - 'null'
+        - result
+    name: phase_margin
+  cmrr_10k:
+    description: CMRR @ 10kHz
+    display: CMRR @ 10kHz
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+        fail: true
+      typical:
+        value: '80'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        maximum: '85'
+        typical: '27'
+        minimum: '-40'
+      Vcm:
+        maximum: '2.97'
+        typical: '1.65'
+        minimum: '0.33'
+        note: measured at 10% and 90% values
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: cmrr.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+    name: cmrr_10k
+  psrrp_10k:
+    description: PSRR+ @ 10kHz
+    display: PSRR+ @ 10kHz
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+      typical:
+        value: '80'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        maximum: '3.3'
+        note: Measured with 1V p-p signal on power supply
+      temperature:
+        maximum: '85'
+        typical: '27'
+        minimum: '-40'
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: psrrp.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+    name: psrrp_10k
+  psrrn_10k:
+    description: PSRR- @ 10kHz
+    display: PSRR- @ 10kHz
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+      typical:
+        value: '80'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        maximum: '3.3'
+        note: Measured with 1V p-p signal on power supply
+      temperature:
+        maximum: '85'
+        typical: '27'
+        minimum: '-40'
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: psrrn.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+    name: psrrn_10k
+  equiv_noise_10k:
+    description: Equivalent Input Noise Voltage @ 10kHz
+    display: Equivalent Input Noise Voltage @ 10kHz
+    unit: nV/√Hz
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: any
+      maximum:
+        value: '30'
+        fail: true
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      frequency:
+        typical: '10'
+        unit: kHz
+      temperature:
+        maximum: '85'
+        typical: '27'
+        minimum: '-40'
+      Vcm:
+        maximum: '2.97'
+        minimum: '0.33'
+        note: measured at 10% and 90% values
+      corner:
+        minimum: ss
+        typical: tt
+        maximum: ff
+    tool:
+      ngspice:
+        template: eqvnoise.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: equiv_noise_10k
+  transient_response:
+    status: skip
+    description: Large signal transient response
+    display: Large signal transient response (Unity gain configuration, 2Vpp)
+    unit: mV
+    plot:
+      filename: transient.png
+      xaxis: time
+      yaxis: result
+    variables:
+    - name: time
+      display: Time
+      unit: ms
+    - name: Vinp
+      display: Vinp
+      unit: V
+    - name: result
+      display: Vout
+      unit: V
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      Tmax:
+        display: Simulation time
+        unit: ns
+        typical: '4000'
+      temperature:
+        typical: '27'
+      corner:
+        typical: tt
+    tool:
+      ngspice:
+        template: transient.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - time
+        - result
+        - Vinp
+    name: transient_response
+    spec: {}
+  Idd_enabled_mm:
+    description: Current draw through analog supply, amplifier enabled
+    status: skip
+    display: '[Mismatch] Idd (enabled)'
+    unit: µA
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: '700'
+      maximum:
+        value: '1800'
+        fail: true
+    conditions:
+      Vvdd:
+        minimum: '3.0'
+        typical: '3.3'
+        maximum: '5.5'
+      Vcm:
+        maximum: '3.3'
+        typical: '1.65'
+        minimum: '0.0'
+      temperature:
+        typical: '27'
+      corner:
+        minimum: ss_mm
+        typical: tt_mm
+        maximum: ff_mm
+    tool:
+      ngspice:
+        template: ivdd_enabled.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Idd_enabled_mm
+  Idd_quiescent_mm:
+    description: Current draw through analog supply, amplifier enabled, no load
+    status: skip
+    display: '[Mismatch] Idd - Quiescent (No Load)'
+    unit: µA
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: '400'
+      maximum:
+        value: '1000'
+        fail: true
+    conditions:
+      Vvdd:
+        maximum: '5.5'
+        typical: '3.3'
+        minimum: '3.0'
+      Vcm:
+        maximum: '2.8'
+        typical: '1.65'
+        minimum: '0.5'
+      temperature:
+        typical: '27'
+      corner:
+        minimum: ss_mm
+        typical: tt_mm
+        maximum: ff_mm
+    tool:
+      ngspice:
+        template: ivdd_quiescent.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Idd_quiescent_mm
+  Idd_disabled_mm:
+    description: Current draw through analog supply, amplifier disabled
+    display: '[Mismatch] Idd (Disabled)'
+    unit: nA
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: '1'
+      maximum:
+        value: '10'
+        fail: true
+    conditions:
+      Vvdd:
+        minimum: '3.0'
+        typical: '3.3'
+        maximum: '5.5'
+      Vcm:
+        maximum: '3.3'
+        typical: '1.65'
+        minimum: '0.0'
+      ena:
+        typical: '0'
+      temperature:
+        typical: '27'
+      corner:
+        minimum: ss_mm
+        typical: tt_mm
+        maximum: ff_mm
+    tool:
+      ngspice:
+        template: ivdd_disabled.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Idd_disabled_mm
+  avo_mm:
+    description: open loop voltage gain
+    display: '[Mismatch] Open-loop Voltage Gain'
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+      typical:
+        value: '100'
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        typical: '27'
+      Vcm:
+        typical: '1.65'
+        note: AC analysis not dependent on Vcm
+      corner:
+        minimum: ss_mm
+        typical: tt_mm
+        maximum: ff_mm
+    tool:
+      ngspice:
+        template: gbw.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+        - 'null'
+        - 'null'
+    name: avo_mm
+  gain_bandwidth_mm:
+    description: Gain Bandwidth Product
+    display: '[Mismatch] Gain-Bandwidth'
+    unit: MHz
+    spec:
+      minimum:
+        value: '10'
+      typical:
+        value: '12'
+      maximum:
+        value: '15'
+        fail: true
+        calculation: maximum
+        limit: above
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        typical: '27'
+      Vcm:
+        typical: '1.65'
+        note: AC analysis not dependent on Vcm
+      corner:
+        minimum: ss_mm
+        typical: tt_mm
+        maximum: ff_mm
+    tool:
+      ngspice:
+        template: gbw.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+        - 'null'
+    name: gain_bandwidth_mm
+  phase_margin_mm:
+    description: Phase margin
+    display: '[Mismatch] Phase Margin'
+    unit: °
+    spec:
+      minimum:
+        value: '45'
+        fail: true
+      typical:
+        value: '70'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        typical: '27'
+      Vcm:
+        typical: '1.65'
+        note: AC analysis not dependent on Vcm
+      corner:
+        minimum: ss_mm
+        typical: tt_mm
+        maximum: ff_mm
+    tool:
+      ngspice:
+        template: gbw.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - 'null'
+        - result
+    name: phase_margin_mm
+  cmrr_10k_mm:
+    description: CMRR @ 10kHz
+    display: '[Mismatch] CMRR @ 10kHz'
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+        fail: true
+      typical:
+        value: '80'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        typical: '27'
+      Vcm:
+        maximum: '2.97'
+        typical: '1.65'
+        minimum: '0.33'
+        note: measured at 10% and 90% values
+      corner:
+        minimum: ss_mm
+        typical: tt_mm
+        maximum: ff_mm
+    tool:
+      ngspice:
+        template: cmrr.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+    name: cmrr_10k_mm
+  psrrp_10k_mm:
+    description: PSRR+ @ 10kHz
+    display: '[Mismatch] PSRR+ @ 10kHz'
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+      typical:
+        value: '80'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        maximum: '3.3'
+        note: Measured with 1V p-p signal on power supply
+      temperature:
+        typical: '27'
+      corner:
+        minimum: ss_mm
+        typical: tt_mm
+        maximum: ff_mm
+    tool:
+      ngspice:
+        template: psrrp.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+    name: psrrp_10k_mm
+  psrrn_10k_mm:
+    description: PSRR- @ 10kHz
+    display: '[Mismatch] PSRR- @ 10kHz'
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+      typical:
+        value: '80'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        maximum: '3.3'
+        note: Measured with 1V p-p signal on power supply
+      temperature:
+        typical: '27'
+      corner:
+        minimum: ss_mm
+        typical: tt_mm
+        maximum: ff_mm
+    tool:
+      ngspice:
+        template: psrrn.sch
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+    name: psrrn_10k_mm
+  Idd_enabled_mc:
+    description: Current draw through analog supply, amplifier enabled
+    status: skip
+    display: '[Monte-Carlo] Idd (enabled)'
+    unit: µA
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: '700'
+      maximum:
+        value: '1800'
+        fail: true
+        calculation: std3p
+        limit: below
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      Vcm:
+        typical: '1.65'
+      temperature:
+        typical: '27'
+      corner:
+        typical: mc
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '100'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: ivdd_enabled.sch
+        collate: iterations
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Idd_enabled_mc
+  Idd_quiescent_mc:
+    description: Current draw through analog supply, amplifier enabled, no load
+    status: skip
+    display: '[Monte-Carlo] Idd - Quiescent (No Load)'
+    unit: µA
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: '400'
+      maximum:
+        value: '1000'
+        fail: true
+        calculation: std3p
+        limit: below
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      Vcm:
+        typical: '1.65'
+      temperature:
+        typical: '27'
+      corner:
+        typical: mc
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '100'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: ivdd_quiescent.sch
+        collate: iterations
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Idd_quiescent_mc
+  Idd_disabled_mc:
+    description: Current draw through analog supply, amplifier disabled
+    display: '[Monte-Carlo] Idd (Disabled)'
+    unit: nA
+    spec:
+      minimum:
+        value: any
+      typical:
+        value: '1'
+      maximum:
+        value: '10'
+        fail: true
+        calculation: std3p
+        limit: below
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      Vcm:
+        typical: '1.65'
+      ena:
+        typical: '0'
+      temperature:
+        typical: '27'
+      corner:
+        typical: mc
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '100'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: ivdd_disabled.sch
+        collate: iterations
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+    name: Idd_disabled_mc
+  avo_mc:
+    description: open loop voltage gain
+    display: '[Monte-Carlo] Open-loop Voltage Gain'
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+      typical:
+        value: '100'
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        typical: '27'
+      Vcm:
+        typical: '1.65'
+        note: AC analysis not dependent on Vcm
+      corner:
+        typical: mc
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '100'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: gbw.sch
+        collate: iterations
+        format: ascii
+        suffix: .data
+        variables:
+        - result
+        - 'null'
+        - 'null'
+    name: avo_mc
+  gain_bandwidth_mc:
+    description: Gain Bandwidth Product
+    display: '[Monte-Carlo] Gain-Bandwidth'
+    unit: MHz
+    spec:
+      minimum:
+        value: '10'
+      typical:
+        value: '12'
+      maximum:
+        value: '15'
+        fail: true
+        calculation: maximum
+        limit: above
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        typical: '27'
+      Vcm:
+        typical: '1.65'
+        note: AC analysis not dependent on Vcm
+      corner:
+        typical: mc
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '100'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: gbw.sch
+        collate: iterations
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+        - 'null'
+    name: gain_bandwidth_mc
+  phase_margin_mc:
+    description: Phase margin
+    display: '[Monte-Carlo] Phase Margin'
+    unit: °
+    spec:
+      minimum:
+        value: '45'
+        fail: true
+        calculation: std3n
+        limit: above
+      typical:
+        value: '70'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        typical: '27'
+      Vcm:
+        typical: '1.65'
+        note: AC analysis not dependent on Vcm
+      corner:
+        typical: mc
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '100'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: gbw.sch
+        collate: iterations
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - 'null'
+        - result
+    name: phase_margin_mc
+  cmrr_10k_mc:
+    description: CMRR @ 10kHz
+    display: '[Monte-Carlo] CMRR @ 10kHz'
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+        fail: true
+        calculation: std3n
+        limit: above
+      typical:
+        value: '80'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        typical: '3.3'
+      temperature:
+        typical: '27'
+      Vcm:
+        typical: '1.65'
+        note: measured at 10% and 90% values
+      corner:
+        typical: mc
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '100'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: cmrr.sch
+        collate: iterations
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+    name: cmrr_10k_mc
+  psrrp_10k_mc:
+    description: PSRR+ @ 10kHz
+    display: '[Monte-Carlo] PSRR+ @ 10kHz'
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+        fail: false
+      typical:
+        value: '80'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        maximum: '3.3'
+        note: Measured with 1V p-p signal on power supply
+      temperature:
+        typical: '27'
+      corner:
+        typical: mc
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '100'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: psrrp.sch
+        collate: iterations
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+    name: psrrp_10k_mc
+  psrrn_10k_mc:
+    description: PSRR- @ 10kHz
+    display: '[Monte-Carlo] PSRR- @ 10kHz'
+    unit: dB
+    spec:
+      minimum:
+        value: '70'
+        fail: false
+      typical:
+        value: '80'
+      maximum:
+        value: any
+    conditions:
+      Vvdd:
+        maximum: '3.3'
+        note: Measured with 1V p-p signal on power supply
+      temperature:
+        typical: '27'
+      corner:
+        typical: mc
+      iterations:
+        description: Iterations to run
+        display: Iterations
+        minimum: '1'
+        maximum: '100'
+        step: linear
+        stepsize: '1'
+    tool:
+      ngspice:
+        template: psrrn.sch
+        collate: iterations
+        format: ascii
+        suffix: .data
+        variables:
+        - 'null'
+        - result
+    name: psrrn_10k_mc
+  magic_area:
+    spec:
+      area:
+        display: Area
+        description: Total circuit layout area
+        unit: µm²
+        maximum:
+          value: any
+      width:
+        display: Width
+        description: Total circuit layout width
+        unit: µm
+        maximum:
+          value: any
+      height:
+        display: Height
+        description: Total circuit layout height
+        unit: µm
+        maximum:
+          value: any
+    tool:
+      magic_area
+
+  magic_drc:
+    description: Magic DRC
+    display: Magic DRC
+    spec:
+      drc_errors:
+        maximum:
+          value: 0
+    tool:
+      magic_drc
+
+  netgen_lvs:
+    description: Netgen LVS
+    display: Netgen LVS
+    spec:
+      lvs_errors:
+        maximum:
+          value: 0
+    tool:
+      netgen_lvs
+
+  klayout_drc_feol:
+    description: KLayout DRC feol
+    display: KLayout DRC feol
+    spec:
+      drc_errors:
+        maximum:
+          value: 0
+    tool:
+        klayout_drc:
+            args: ['-rd', 'feol=true']
+
+  klayout_drc_beol:
+    description: KLayout DRC beol
+    display: KLayout DRC beol
+    spec:
+      drc_errors:
+        maximum:
+          value: 0
+    tool:
+        klayout_drc:
+            args: ['-rd', 'beol=true']
+
+  klayout_drc_full:
+    description: KLayout DRC full
+    display: KLayout DRC full
+    spec:
+      drc_errors:
+        maximum:
+          value: 0
+    tool:
+        klayout_drc:
+            args: ['-rd', 'feol=true', '-rd', 'beol=true', '-rd', 'offgrid=true']

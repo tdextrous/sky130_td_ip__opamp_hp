@@ -1133,8 +1133,6 @@ N -3080 1300 -3080 1400 {
 lab=ena}
 N -3080 1300 -3060 1300 {
 lab=ena}
-N -3120 1350 -3080 1350 {
-lab=ena}
 N -3020 1350 -2920 1350 {
 lab=#net48}
 N -2380 980 -2380 1020 {
@@ -2756,6 +2754,10 @@ N 3660 940 3660 1010 {
 lab=avdd}
 N 3660 940 3720 940 {
 lab=avdd}
+N -3200 1350 -3080 1350 {}
+N -3170 1350 -3170 1400 {}
+N -3170 1460 -3170 1470 {}
+N -3170 1470 -3020 1470 {}
 C {sky130_fd_pr/nfet_g5v0d10v5.sym} -180 -110 0 0 {name=M3
 L="1"
 W="3"
@@ -3078,7 +3080,7 @@ C {devices/lab_wire.sym} 950 -50 2 1 {name=p16 sig_type=std_logic lab=avss}
 C {devices/ipin.sym} -460 -10 0 0 {name=p4 lab=vinn}
 C {devices/ipin.sym} 460 -10 2 0 {name=p5 lab=vinp}
 C {devices/opin.sym} 1780 -80 0 0 {name=p3 lab=vout}
-C {devices/ipin.sym} -3120 1350 0 0 {name=p21 lab=ena}
+C {devices/ipin.sym} -3200 1350 0 0 {name=p21 lab=ena}
 C {sky130_fd_pr/nfet_g5v0d10v5.sym} -2260 110 0 1 {name=MB9
 L="2.0"
 W="2"
@@ -5391,3 +5393,9 @@ spiceprefix=X
 }
 C {devices/lab_wire.sym} 3720 1050 2 1 {name=p256 sig_type=std_logic lab=vtailp}
 C {devices/lab_wire.sym} 3680 940 0 1 {name=p259 sig_type=std_logic lab=avdd}
+C {sky130_fd_pr/diode.sym} -3170 1430 0 0 {name=D1
+model=diode_pw2nd_05v5
+area=211.6e9
+perim=1.84e6
+spiceprefix=X
+}
